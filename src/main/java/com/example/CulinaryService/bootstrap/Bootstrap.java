@@ -1,16 +1,17 @@
 package com.example.CulinaryService.bootstrap;
 
 import com.example.CulinaryService.enums.Role;
+import com.example.CulinaryService.model.Chat;
 import com.example.CulinaryService.model.Cook;
 import com.example.CulinaryService.model.Message;
 import com.example.CulinaryService.model.User;
-import com.example.CulinaryService.service.CookServiceImpl;
-import com.example.CulinaryService.service.CrudService;
-import com.example.CulinaryService.service.MessageServiceImpl;
-import com.example.CulinaryService.service.UserService;
+import com.example.CulinaryService.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class Bootstrap implements CommandLineRunner {
@@ -22,6 +23,9 @@ public class Bootstrap implements CommandLineRunner {
 
     @Autowired
     private MessageServiceImpl messageService;
+
+    @Autowired
+    private ChatServiceImpl chatService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -51,5 +55,13 @@ public class Bootstrap implements CommandLineRunner {
 
         Message message3 = new Message(user3, "How are you?");
         messageService.add(message3);
+
+        List<Message> messages = new ArrayList<>();
+        messages.add(message1);
+        messages.add(message2);
+        messages.add(message3);
+
+        Chat chat1 = new Chat(messages);
+        chatService.add(chat1);
     }
 }
