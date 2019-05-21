@@ -1,7 +1,9 @@
 package com.example.CulinaryService.bootstrap;
 
 import com.example.CulinaryService.enums.Role;
+import com.example.CulinaryService.model.Cook;
 import com.example.CulinaryService.model.User;
+import com.example.CulinaryService.service.CookServiceImpl;
 import com.example.CulinaryService.service.CrudService;
 import com.example.CulinaryService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +15,27 @@ public class Bootstrap implements CommandLineRunner {
     @Autowired
     private UserService userCrudService;
 
+    @Autowired
+    private CookServiceImpl cookService;
+
     @Override
     public void run(String... args) throws Exception {
         User user1 = new User("user1", "111", "@user1", Role.USER, "123", 2);
         userCrudService.add(user1);
 
-        User user2 = new User("admin1", "222", "@admin1", Role.ADMIN, "123", 5);
+        User user2 = new User("user2", "222", "@user2", Role.ADMIN, "123", 5);
         userCrudService.add(user2);
 
-        User user3 = new User("cook1", "333", "@cook1", Role.COOK, "123", 1);
+        User user3 = new User("user3", "333", "@user3", Role.COOK, "123", 1);
         userCrudService.add(user3);
+
+        Cook cook1 = new Cook("COOK1");
+        cookService.add(cook1);
+
+        Cook cook2 = new Cook("COOK2");
+        cookService.add(cook2);
+
+        Cook cook3 = new Cook("COOK3");
+        cookService.add(cook3);
     }
 }
