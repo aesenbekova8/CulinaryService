@@ -1,17 +1,13 @@
 package com.example.CulinaryService.bootstrap;
 
-import com.example.CulinaryService.enums.Role;
-import com.example.CulinaryService.model.Chat;
-import com.example.CulinaryService.model.Cook;
-import com.example.CulinaryService.model.Message;
-import com.example.CulinaryService.model.User;
+
+import com.example.CulinaryService.model.*;
 import com.example.CulinaryService.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class Bootstrap implements CommandLineRunner {
@@ -27,33 +23,42 @@ public class Bootstrap implements CommandLineRunner {
     @Autowired
     private ChatServiceImpl chatService;
 
+    @Autowired
+    private RolesServiceImpl roleCrudService;
+
     @Override
     public void run(String... args) throws Exception {
-        User user1 = new User("user1", "111", "@user1", Role.USER, "123", 2);
+        Roles roles = new Roles("ADMIN");
+        Roles roles2 = new Roles("USER");
+        roleCrudService.add(roles);
+        roleCrudService.add(roles2);
+        //, new HashSet<Role> (Arrays.asList(role2))
+
+        User user1 = new User("@user1");
         userCrudService.add(user1);
 
-        User user2 = new User("user2", "222", "@user2", Role.ADMIN, "123", 5);
+        User user2 = new User("@user2");
         userCrudService.add(user2);
 
-        User user3 = new User("user3", "333", "@user3", Role.COOK, "123", 1);
+        User user3 = new User("@user3");
         userCrudService.add(user3);
 
-        Cook cook1 = new Cook("COOK1");
+        Cook cook1 = new Cook("COOK1", user1);
         cookService.add(cook1);
 
-        Cook cook2 = new Cook("COOK2");
+        Cook cook2 = new Cook("COOK2", user2);
         cookService.add(cook2);
 
-        Cook cook3 = new Cook("COOK3");
+        Cook cook3 = new Cook("COOK3", user3);
         cookService.add(cook3);
 
-        Message message1 = new Message(user1, "Hello!");
+        Message message1 = new Message(user1, user2, "Hello!");
         messageService.add(message1);
 
-        Message message2 = new Message(user2, "Hi!");
+        Message message2 = new Message(user2, user1, "Hi!");
         messageService.add(message2);
 
-        Message message3 = new Message(user3, "How are you?");
+        Message message3 = new Message(user1, user2, "How are you?");
         messageService.add(message3);
 
         List<Message> messages = new ArrayList<>();
@@ -61,7 +66,7 @@ public class Bootstrap implements CommandLineRunner {
         messages.add(message2);
         messages.add(message3);
 
-        Chat chat1 = new Chat(messages);
+        Chat chat1 = new Chat(user1, messages);
         chatService.add(chat1);
     }
 }

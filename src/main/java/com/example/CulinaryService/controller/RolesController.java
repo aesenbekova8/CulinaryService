@@ -1,8 +1,8 @@
 package com.example.CulinaryService.controller;
 
-import com.example.CulinaryService.model.Cook;
-import com.example.CulinaryService.model.Cook;
+import com.example.CulinaryService.model.Roles;
 import com.example.CulinaryService.service.CrudService;
+import com.example.CulinaryService.service.RolesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cook")
-public class CookController {
+@RequestMapping("/roles")
+public class RolesController {
     @Autowired
-    private CrudService<Cook> cookCrudService;
+    private CrudService<Roles> rolesService;
 
     @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Cook> add(@RequestBody Cook u){
-        Cook Cook = this.cookCrudService.add(u);
+    public ResponseEntity<Roles> add(@RequestBody Roles u){
+        Roles Roles = this.rolesService.add(u);
         try {
-            return new ResponseEntity<>(Cook, HttpStatus.OK);
+            return new ResponseEntity<>(Roles, HttpStatus.OK);
         }
         catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -29,15 +29,15 @@ public class CookController {
     }
 
     @GetMapping(path = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<Cook> getAll(){
-        return this.cookCrudService.getAll();
+    public List<Roles> getAll(){
+        return this.rolesService.getAll();
     }
 
     @GetMapping(path = "/get/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Cook> getById(@PathVariable Long id){
-        Cook cook = this.cookCrudService.getById(id);
+    public ResponseEntity<Roles> getById(@PathVariable Long id){
+        Roles Roles = this.rolesService.getById(id);
         try {
-            return new ResponseEntity<>(cook, HttpStatus.OK);
+            return new ResponseEntity<>(Roles, HttpStatus.OK);
         }
         catch (Exception ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -45,9 +45,9 @@ public class CookController {
     }
 
     @DeleteMapping(path = "delete/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Cook> delete(@PathVariable Long id){
+    public ResponseEntity<Roles> delete(@PathVariable Long id){
         try {
-            this.cookCrudService.delete(id);
+            this.rolesService.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception ex){

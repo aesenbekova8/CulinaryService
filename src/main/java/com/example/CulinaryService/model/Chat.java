@@ -9,6 +9,10 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private User user;
+
     @OneToMany
     @JoinColumn(name = "message_id")
     private List<Message> messages;
@@ -16,8 +20,9 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(List<Message> messages) {
+    public Chat(User user, List<Message> messages) {
         this.messages = messages;
+        this.user = user;
     }
 
     public Long getId() {
@@ -26,6 +31,14 @@ public class Chat {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Message> getMessages() {

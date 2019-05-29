@@ -1,5 +1,6 @@
 package com.example.CulinaryService.controller;
 
+import com.example.CulinaryService.model.Roles;
 import com.example.CulinaryService.model.User;
 import com.example.CulinaryService.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(path = "delete/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @DeleteMapping(path = "/delete/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<User> delete(@PathVariable Long id){
         try {
             this.userCrudService.delete(id);

@@ -1,9 +1,6 @@
 package com.example.CulinaryService.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -11,6 +8,10 @@ public class Cook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "users_id")
+    private User user;
 
     private String name;
 
@@ -27,8 +28,9 @@ public class Cook {
     public Cook() {
     }
 
-    public Cook(String name) {
+    public Cook(String name, User user) {
         this.name = name;
+        this.user = user;
     }
 
     public Cook(String name, String phoneNo, String password, String skills, int rating, boolean withDeparture) {
@@ -46,6 +48,14 @@ public class Cook {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {

@@ -10,8 +10,12 @@ public class Message {
     private Long id;
 
     @OneToOne
-    @JoinTable(name = "users_id")
-    private User user;
+    @JoinTable(name = "from_user_id")
+    private User fromUserId;
+
+    @OneToOne
+    @JoinTable(name = "to_user_id")
+    private User toUserId;
 
     private String message;
 
@@ -20,10 +24,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(User user, String message) {
-        this.user = user;
+    public Message(User fromUserId, User toUserId, String message) {
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
         this.message = message;
-        this.time = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -34,12 +38,20 @@ public class Message {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getFromUserId() {
+        return fromUserId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setFromUserId(User fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public User getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(User toUserId) {
+        this.toUserId = toUserId;
     }
 
     public String getMessage() {

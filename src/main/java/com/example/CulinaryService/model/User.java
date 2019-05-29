@@ -1,8 +1,7 @@
 package com.example.CulinaryService.model;
 
-import com.example.CulinaryService.enums.Role;
-
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -17,7 +16,9 @@ public class User {
 
     private String login;
 
-    private Role role;
+//    @ManyToMany
+//    @JoinColumn(name = "roles_id")
+//    private Set<Role> roles;
 
     private String password;
 
@@ -26,18 +27,8 @@ public class User {
     public User() {
     }
 
-    public User(String login, Role role) {
+    public User(String login) {
         this.login = login;
-        this.role = role;
-    }
-
-    public User(String name, String phoneNo, String login, Role role, String password, int rating) {
-        this.name = name;
-        this.phoneNo = phoneNo;
-        this.login = login;
-        this.role = role;
-        this.password = password;
-        this.rating = rating;
     }
 
     public Long getId() {
@@ -72,13 +63,13 @@ public class User {
         this.login = login;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+//    public Set<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Set<Role> roles) {
+//        this.roles = roles;
+//    }
 
     public String getPassword() {
         return password;
