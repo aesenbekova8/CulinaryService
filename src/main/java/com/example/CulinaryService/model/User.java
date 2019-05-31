@@ -1,8 +1,20 @@
 package com.example.CulinaryService.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -10,26 +22,34 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
+    private String lastName;
+
+    @NotEmpty
     private String phoneNo;
 
+    @NotEmpty
     private String login;
 
-    @ManyToMany
-    @JoinColumn(name = "roles_id")
+    @Column(name = "email")
+    @Email
+    @NotEmpty
+    private String email;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Roles> roles;
 
+    @Length(min = 3)
+    @NotEmpty
     private String password;
 
     private int rating;
-
-    public User() {
-    }
-
-    public User(String login) {
-        this.login = login;
-    }
 
     public Long getId() {
         return id;
@@ -47,6 +67,14 @@ public class User {
         this.name = name;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getPhoneNo() {
         return phoneNo;
     }
@@ -61,6 +89,14 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<Roles> getRoles() {

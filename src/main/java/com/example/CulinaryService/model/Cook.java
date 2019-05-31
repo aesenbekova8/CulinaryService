@@ -13,7 +13,7 @@ public class Cook {
     @JoinColumn(name = "users_id")
     private User user;
 
-    private List<String> skills;
+    private String skills;
 
     private int rating;
 
@@ -42,11 +42,11 @@ public class Cook {
         this.user = user;
     }
 
-    public List<String> getSkills() {
+    public String getSkills() {
         return skills;
     }
 
-    public void setSkills(List<String> skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
 
