@@ -16,9 +16,9 @@ public class User {
 
     private String login;
 
-//    @ManyToMany
-//    @JoinColumn(name = "roles_id")
-//    private Set<Role> roles;
+    @ManyToMany
+    @JoinColumn(name = "roles_id")
+    private Set<Roles> roles;
 
     private String password;
 
@@ -63,13 +63,13 @@ public class User {
         this.login = login;
     }
 
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Set<Role> roles) {
-//        this.roles = roles;
-//    }
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 
     public String getPassword() {
         return password;

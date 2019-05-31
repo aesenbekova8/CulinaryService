@@ -26,6 +26,9 @@ public class Bootstrap implements CommandLineRunner {
     @Autowired
     private RolesServiceImpl roleCrudService;
 
+    @Autowired
+    private CrudService<Order> orderCrudService;
+
     @Override
     public void run(String... args) throws Exception {
         Roles roles = new Roles("ADMIN");
@@ -43,13 +46,13 @@ public class Bootstrap implements CommandLineRunner {
         User user3 = new User("@user3");
         userCrudService.add(user3);
 
-        Cook cook1 = new Cook("COOK1", user1);
+        Cook cook1 = new Cook(user1);
         cookService.add(cook1);
 
-        Cook cook2 = new Cook("COOK2", user2);
+        Cook cook2 = new Cook(user2);
         cookService.add(cook2);
 
-        Cook cook3 = new Cook("COOK3", user3);
+        Cook cook3 = new Cook(user3);
         cookService.add(cook3);
 
         Message message1 = new Message(user1, user2, "Hello!");
@@ -68,5 +71,10 @@ public class Bootstrap implements CommandLineRunner {
 
         Chat chat1 = new Chat(user1, messages);
         chatService.add(chat1);
+
+        Order order1 = new Order(user1, cook1);
+        orderCrudService.add(order1);
+        Order order2 = new Order(user2, cook2);
+        orderCrudService.add(order2);
     }
 }

@@ -13,13 +13,7 @@ public class Cook {
     @JoinColumn(name = "users_id")
     private User user;
 
-    private String name;
-
-    private String phoneNo;
-
-    private String password;
-
-    private String skills;
+    private List<String> skills;
 
     private int rating;
 
@@ -28,18 +22,8 @@ public class Cook {
     public Cook() {
     }
 
-    public Cook(String name, User user) {
-        this.name = name;
+    public Cook(User user) {
         this.user = user;
-    }
-
-    public Cook(String name, String phoneNo, String password, String skills, int rating, boolean withDeparture) {
-        this.name = name;
-        this.phoneNo = phoneNo;
-        this.password = password;
-        this.skills = skills;
-        this.rating = rating;
-        this.withDeparture = withDeparture;
     }
 
     public Long getId() {
@@ -58,35 +42,11 @@ public class Cook {
         this.user = user;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSkills() {
+    public List<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(String skills) {
+    public void setSkills(List<String> skills) {
         this.skills = skills;
     }
 

@@ -28,6 +28,7 @@ public class Message {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.message = message;
+        this.time = LocalDateTime.now();
     }
 
     public Long getId() {
