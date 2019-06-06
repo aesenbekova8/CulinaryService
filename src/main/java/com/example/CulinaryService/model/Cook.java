@@ -13,11 +13,10 @@ public class Cook {
     @JoinColumn(name = "users_id")
     private User user;
 
+    //Object
     private String skills;
 
     private int rating;
-
-    private boolean withDeparture;
 
     public Cook() {
     }
@@ -56,13 +55,5 @@ public class Cook {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public boolean isWithDeparture() {
-        return withDeparture;
-    }
-
-    public void setWithDeparture(boolean withDeparture) {
-        this.withDeparture = withDeparture;
     }
 }

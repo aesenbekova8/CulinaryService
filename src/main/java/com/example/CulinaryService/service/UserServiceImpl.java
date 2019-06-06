@@ -1,17 +1,20 @@
 package com.example.CulinaryService.service;
 
+import com.example.CulinaryService.model.Cook;
+import com.example.CulinaryService.model.Order;
 import com.example.CulinaryService.model.Roles;
 import com.example.CulinaryService.model.User;
+import com.example.CulinaryService.repository.CookRepository;
+import com.example.CulinaryService.repository.OrderRepository;
 import com.example.CulinaryService.repository.RolesRepository;
 import com.example.CulinaryService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -22,30 +25,53 @@ public class UserServiceImpl implements CrudService<User>, UserService{
     @Autowired
     private RolesRepository rolesRepository;
 
-    @Override
-    public User registration(User u) {
-        Roles role = new Roles("USER");
-        HashSet<Roles> roles = new HashSet<>();
-        roles.add(role);
-        rolesRepository.save(role);
-        User user = userRepository.save(u);
-        user.setRoles(roles);
-//        roles.stream().map(i -> i.getName().equals("USER")).findFirst().get();
-        return userRepository.save(u);
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private CookRepository cookRepository;
+
+    public User getByName(String name, User user){
+        List<User> users = userRepository.findAll();
+        for (User u : users){
+            if (u.getName().equals(name)){
+                user = u;
+            }
+        }
+        return user;
     }
 
     @Override
-    public Set<Roles> roleDefinition(User u) {
-        User user = userRepository.save(u);
-        HashSet<Roles> roles = new HashSet<>();
-        roles.add(new Roles("USER"));
-        user.setRoles(roles);
-        roles.stream().map(i -> i.getName().equals("USER")).findFirst().get();
-        return null;
+    public List<Order> getAllOrders(Long userId) {
+        User user = userRepository.findById(userId).get();
+        List<Order> orders = user.getOrders();
+        return orders;
+    }
+
+    @Override
+    public Order madeOrder(Order order, Long userId, Long cookId) {
+        User user = userRepository.findById(userId).get();
+        Cook cook = cookRepository.findById(cookId).get();
+        order.setCook(cook);
+        order.setUser(user);
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+    //        user.setOrders(orders);
+        userRepository.save(user);
+        orderRepository.save(order);
+        return order;
     }
 
     @Override
     public User add(User user) {
+        user.setActive(1);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Roles userRole = new Roles("USER");
+//        Roles userRole = rolesRepository.findByRole("USER");
+        user.setRoles(new HashSet<Roles>(Arrays.asList(userRole)));
         return userRepository.save(user);
     }
 

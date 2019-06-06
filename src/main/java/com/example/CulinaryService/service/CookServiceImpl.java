@@ -4,6 +4,7 @@ import com.example.CulinaryService.model.Cook;
 import com.example.CulinaryService.model.Roles;
 import com.example.CulinaryService.model.User;
 import com.example.CulinaryService.repository.CookRepository;
+import com.example.CulinaryService.repository.RolesRepository;
 import com.example.CulinaryService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,20 +21,22 @@ public class CookServiceImpl implements CrudService<Cook>, CookService {
     @Autowired
     public UserRepository userRepository;
 
+    @Autowired
+    private RolesRepository rolesRepository;
+
     @Override
-    public Cook cooRegistration(Cook c, Long userId) {
-        Cook cook = cookRepository.save(c);
+    public Cook add(Cook c, Long userId) {
         User user = userRepository.findById(userId).get();
-        cook.setUser(user);
-//        Roles role = new Roles("COOK");
-//        HashSet<Roles> roles = new HashSet<>();
-//        roles.add(role);
-//        user.setRoles(roles);
+        c.setUser(user);
+        Roles role = new Roles("COOK");
+//        Roles role = rolesRepository.findByRole("COOK");
+        user.setRoles(new HashSet<Roles>(Arrays.asList(role)));
         return cookRepository.save(c);
     }
 
     @Override
     public Cook add(Cook cook) {
+
         return cookRepository.save(cook);
     }
 

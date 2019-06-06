@@ -1,20 +1,13 @@
 package com.example.CulinaryService.model;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,21 +15,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+//    @NotEmpty
     private String name;
 
-    @NotEmpty
+//    @NotEmpty
     private String lastName;
 
-    @NotEmpty
+//    @NotEmpty
     private String phoneNo;
-
-    @NotEmpty
-    private String login;
 
     @Column(name = "email")
     @Email
-    @NotEmpty
+//    @NotEmpty
     private String email;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -46,10 +36,23 @@ public class User {
     private Set<Roles> roles;
 
     @Length(min = 3)
-    @NotEmpty
+//    @NotEmpty
     private String password;
 
-    private int rating;
+    private int active;
+
+    @OneToMany
+    @JoinTable(name = "user_orders", joinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orders;
+
+    public User() {
+    }
+
+    public User(@Email @NotEmpty String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -83,14 +86,6 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -115,11 +110,19 @@ public class User {
         this.password = password;
     }
 
-    public int getRating() {
-        return rating;
+    public int getActive() {
+        return active;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }
