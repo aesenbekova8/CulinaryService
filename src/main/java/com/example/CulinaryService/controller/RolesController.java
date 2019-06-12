@@ -27,32 +27,4 @@ public class RolesController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-//    @GetMapping(path = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//    public List<Roles> getAll(){
-//        return this.rolesService.getAll();
-//    }
-//
-//    @GetMapping(path = "/get/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//    public ResponseEntity<Roles> getById(@PathVariable Long id){
-//        Roles Roles = this.rolesService.getById(id);
-//        try {
-//            return new ResponseEntity<>(Roles, HttpStatus.OK);
-//        }
-//        catch (Exception ex){
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//
-//    @DeleteMapping(path = "delete/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//    public ResponseEntity<Roles> delete(@PathVariable Long id){
-//        try {
-//            this.rolesService.delete(id);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }
-//        catch (Exception ex){
-//            System.out.println(ex.toString());
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
 }

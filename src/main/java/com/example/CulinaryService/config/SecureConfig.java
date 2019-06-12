@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 @Configuration
 public class SecureConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -21,28 +22,28 @@ public class SecureConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("/user/add").permitAll()
-                .antMatchers("/user").permitAll()
-//                .antMatchers("/user/getAll").hasRole("ADMIN")
-//                .antMatchers("/user/delete/{id}").hasRole("ADMIN")
-//                .antMatchers("/user/get/{id}").hasRole("ADMIN")
-//                .antMatchers("/user/toOrder/{userId}/{cookId}").hasRole("USER")
-//                .antMatchers("/user/getAllOrders").hasRole("USER")
-//                .antMatchers("/cook/add").hasRole("USER")
-//                .antMatchers("/cook/getAll").hasRole("USER")
-//                .antMatchers("/cook/get/{id}").hasRole("ADMIN")
-//                .antMatchers("/cook/delete/{id}").hasRole("ADMIN")
-//                .antMatchers("/register").permitAll()
-//                .antMatchers("/asCook/{userId}").hasRole("USER")
-//                .antMatchers("/roles/add").hasRole("ADMIN")
-                .and()
-                .httpBasic().and().logout();
+        http
+                .authorizeRequests()
+                .antMatchers("/user/getAll").permitAll()
+//                .antMatchers("/user/delete/{id}").access("hasRole('ADMIN')")
+//                .antMatchers("/user/get/{id}").access("hasRole('USER')")
+//                .antMatchers("/user/toOrder/{userId}/{cookId}").access("hasRole('USER')")
+//                .antMatchers("/user/getAllOrders").access("hasRole('USER')")
+//                .antMatchers("/cook/add").access("hasRole('USER')")
+//                .antMatchers("/cook/getAll").access("hasRole('USER')")
+//                .antMatchers("/cook/get/{id}").access("hasRole('USER')")
+//                .antMatchers("/cook/delete/{id}").access("hasRole('ADMIN')")
+                .antMatchers("/register").permitAll()
+                .antMatchers("/asCook/{userId}").permitAll()
+//                .antMatchers("/roles/add").access("hasRole('ADMIN')")
+                .and().httpBasic()
+                .and().csrf().disable();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
+                .dataSource(dataSource)
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select active, email, last_name, name, password, " +
                         "phone_no from users where email = ?")

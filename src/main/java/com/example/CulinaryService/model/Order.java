@@ -1,6 +1,7 @@
 package com.example.CulinaryService.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,15 +11,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime orderTime;
+    private LocalDateTime orderTime = LocalDateTime.now();
 
     @OneToOne
     @JoinColumn(name = "users_id")
+//    @NotEmpty
     private User user;
 
     @OneToOne
     @JoinColumn(name = "cook_id")
+//    @NotEmpty
     private Cook cook;
+
+    private String description;
 
     private Double sum;
 
@@ -61,6 +66,14 @@ public class Order {
 
     public void setCook(Cook cook) {
         this.cook = cook;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Double getSum() {

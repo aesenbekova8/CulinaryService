@@ -13,16 +13,20 @@ public class Cook {
     @JoinColumn(name = "users_id")
     private User user;
 
-    //Object
-    private String skills;
+    @ManyToMany
+    @JoinTable(name = "cook_skill",
+            joinColumns = @JoinColumn(name = "cook_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills;
 
     private int rating;
 
     public Cook() {
     }
 
-    public Cook(User user) {
+    public Cook(User user, List<Skill> skills) {
         this.user = user;
+        this.skills = skills;
     }
 
     public Long getId() {
@@ -41,11 +45,12 @@ public class Cook {
         this.user = user;
     }
 
-    public String getSkills() {
+
+    public List<Skill> getSkills() {
         return skills;
     }
 
-    public void setSkills(String skills) {
+    public void setSkills(List<Skill> skills) {
         this.skills = skills;
     }
 

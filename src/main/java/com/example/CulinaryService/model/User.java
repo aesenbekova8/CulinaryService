@@ -13,12 +13,12 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Column(name = "users_id")
     private Long id;
 
 //    @NotEmpty
     private String name;
 
-//    @NotEmpty
     private String lastName;
 
 //    @NotEmpty
@@ -29,7 +29,7 @@ public class User {
 //    @NotEmpty
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
@@ -42,15 +42,17 @@ public class User {
     private int active;
 
     @OneToMany
-    @JoinTable(name = "user_orders", joinColumns = @JoinColumn(name = "order_id"))
+    @JoinTable(name = "user_id", joinColumns = @JoinColumn(name = "order_id"))
     private List<Order> orders;
 
     public User() {
     }
 
-    public User(@Email @NotEmpty String email, String name, String password) {
-        this.email = email;
+    public User(String name, String lastName, String phoneNo, @Email String email, @Length(min = 3) String password) {
         this.name = name;
+        this.lastName = lastName;
+        this.phoneNo = phoneNo;
+        this.email = email;
         this.password = password;
     }
 

@@ -14,7 +14,7 @@ public class Chat {
     private User user;
 
     @OneToMany
-    @JoinColumn(name = "message_id")
+    @JoinTable(name = "message_id")
     private List<Message> messages;
 
     public Chat() {

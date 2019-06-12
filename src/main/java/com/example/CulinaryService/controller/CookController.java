@@ -1,7 +1,8 @@
 package com.example.CulinaryService.controller;
 
+import com.example.CulinaryService.entity.Search;
 import com.example.CulinaryService.model.Cook;
-import com.example.CulinaryService.model.Cook;
+import com.example.CulinaryService.service.CookService;
 import com.example.CulinaryService.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,9 @@ import java.util.List;
 public class CookController {
     @Autowired
     private CrudService<Cook> cookCrudService;
+
+    @Autowired
+    private CookService cookService;
 
     @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Cook> add(@RequestBody Cook u){
@@ -54,5 +58,11 @@ public class CookController {
             System.out.println(ex.toString());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    //TODO - закончить
+    @GetMapping("/getByCategory")
+    public List<Cook> getByCategory(@RequestBody Search search){
+        return cookService.findByCategory(search);
     }
 }

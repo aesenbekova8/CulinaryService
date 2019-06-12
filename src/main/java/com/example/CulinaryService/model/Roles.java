@@ -7,7 +7,8 @@ import javax.persistence.*;
 @Entity
 public class Roles {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "roles_id")
     private Long id;
 
     @Column(name = "role")

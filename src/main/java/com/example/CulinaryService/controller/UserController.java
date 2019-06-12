@@ -1,5 +1,6 @@
 package com.example.CulinaryService.controller;
 
+import com.example.CulinaryService.helpers.Helper;
 import com.example.CulinaryService.model.Order;
 import com.example.CulinaryService.model.Roles;
 import com.example.CulinaryService.model.User;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,20 +28,15 @@ public class UserController {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private Helper helper;
+
+    //todo - helper
+    @CrossOrigin
     @GetMapping("/getAllOrders")
     public List<Order> getOrder(){
+        helper.getCurrentUser();
         return orderRepository.findAll();
-    }
-
-    @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<User> add(@RequestBody User u){
-        User user = this.userCrudService.add(u);
-        try {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
-        catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping(path = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -69,6 +66,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @PostMapping("/toOrder/{userId}/{cookId}")
     public ResponseEntity<Order> toOrder(@RequestBody Order o, @PathVariable Long userId, @PathVariable Long cookId){

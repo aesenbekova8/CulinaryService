@@ -1,13 +1,7 @@
 package com.example.CulinaryService.service;
 
-import com.example.CulinaryService.model.Cook;
-import com.example.CulinaryService.model.Order;
-import com.example.CulinaryService.model.Roles;
-import com.example.CulinaryService.model.User;
-import com.example.CulinaryService.repository.CookRepository;
-import com.example.CulinaryService.repository.OrderRepository;
-import com.example.CulinaryService.repository.RolesRepository;
-import com.example.CulinaryService.repository.UserRepository;
+import com.example.CulinaryService.model.*;
+import com.example.CulinaryService.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +28,18 @@ public class UserServiceImpl implements CrudService<User>, UserService{
     @Autowired
     private CookRepository cookRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
+
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public User getByName(String name, User user){
         List<User> users = userRepository.findAll();
         for (User u : users){
@@ -57,20 +63,20 @@ public class UserServiceImpl implements CrudService<User>, UserService{
         Cook cook = cookRepository.findById(cookId).get();
         order.setCook(cook);
         order.setUser(user);
-        List<Order> orders = new ArrayList<>();
-        orders.add(order);
-    //        user.setOrders(orders);
-        userRepository.save(user);
         orderRepository.save(order);
-        return order;
+        List<Order> userOrders = user.getOrders();
+        userOrders.add(order);
+        userRepository.save(user);
+        return orderRepository.save(order);
     }
 
     @Override
     public User add(User user) {
         user.setActive(1);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Roles userRole = new Roles("USER");
-//        Roles userRole = rolesRepository.findByRole("USER");
+//        Roles userRole = new Roles("USER");
+        Roles userRole = rolesRepository.findByName("ROLE_USER");
+        rolesRepository.save(userRole);
         user.setRoles(new HashSet<Roles>(Arrays.asList(userRole)));
         return userRepository.save(user);
     }

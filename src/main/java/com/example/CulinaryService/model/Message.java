@@ -4,22 +4,23 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "message")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinTable(name = "from_user_id")
+    @JoinColumn(name = "from_user_id")
     private User fromUserId;
 
     @OneToOne
-    @JoinTable(name = "to_user_id")
+    @JoinColumn(name = "to_user_id")
     private User toUserId;
 
     private String message;
 
-    private LocalDateTime time;
+    private LocalDateTime time = LocalDateTime.now();
 
     public Message() {
     }
