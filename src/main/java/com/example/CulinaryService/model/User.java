@@ -1,4 +1,5 @@
 package com.example.CulinaryService.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -30,9 +31,10 @@ public class User {
     private String email;
 
     @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @JsonIgnore
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "users_id"),
+//            inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Roles> roles;
 
     @Length(min = 3)
@@ -42,7 +44,8 @@ public class User {
     private int active;
 
     @OneToMany
-    @JoinTable(name = "user_id", joinColumns = @JoinColumn(name = "order_id"))
+    @JsonIgnore
+//    @JoinTable(name = "orders_id")
     private List<Order> orders;
 
     public User() {

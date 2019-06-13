@@ -2,17 +2,11 @@ package com.example.CulinaryService.service;
 
 import com.example.CulinaryService.entity.Search;
 import com.example.CulinaryService.model.*;
-import com.example.CulinaryService.repository.CategoryRepository;
-import com.example.CulinaryService.repository.CookRepository;
-import com.example.CulinaryService.repository.RolesRepository;
-import com.example.CulinaryService.repository.UserRepository;
+import com.example.CulinaryService.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CookServiceImpl implements CrudService<Cook>, CookService {
@@ -26,9 +20,89 @@ public class CookServiceImpl implements CrudService<Cook>, CookService {
     private RolesRepository rolesRepository;
 
     @Autowired
+    private SkillRepository skillRepository;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private MarkRepository markRepository;
+
     @Override
+    public List<Cook> getAllCooks() {
+        return cookRepository.getAllCooksByRating();
+    }
+
+    @Override
+    public Cook rateCook(Mark mark, Long userId, Long cookId) {
+        User user = userRepository.findById(userId).get();
+        Cook cook = cookRepository.findById(cookId).get();
+        mark.setUser(user);
+        mark.setCook(cook);
+        markRepository.save(mark);
+        List<Mark> marks = cook.getMarks();
+        boolean allow = true;
+        for (Mark m : marks){
+            if (m.getUser().equals(user)){
+                allow = false;
+                break;
+            }
+        }
+        if (allow){
+            mark.setUser(user);
+            mark.setCook(cook);
+            markRepository.save(mark);
+            marks.add(mark);
+            cook.setMarks(marks);
+            cook.setRating(cook.getRating() + 1);
+            cookRepository.save(cook);
+            return cook;
+        }
+        else {
+            return null;
+        }
+    }
+
+//        mark.setUser(user);
+//        mark.setCook(cook);
+//        markRepository.save(mark);
+//        List<Mark> marks = cook.getMarks();
+//        marks.add(mark);
+//        cook.setMarks(marks);
+//        cookRepository.save(cook);
+//        if (markCook.equals("+")){
+//            for (Mark m : marks){
+//                    cook.setMarks(marks);
+//                    cook.setRating(cook.getRating() + 1);
+//                    cookRepository.save(cook);
+//            }
+//        }
+//        else {
+//            return null;
+//        }
+////        cook.setRating(cook.getRating() + 1);
+////        cookRepository.save(cook);
+//        return cook;
+//    }
+
+    @Override
+//    public List<Cook> findByCategory(Search search) {
+//        List<Cook> getAllCooks = cookRepository.findAll();
+//        List<Cook> cooks = new ArrayList<>();
+//        Skill skillCategory = skillRepository.findByCategory(search.getSearch());
+//        Long cookId = null;
+//        for (Cook c : getAllCooks){
+//            for (Skill s : c.getSkills()){
+//                if (s.getCategory().equals(skillCategory)){
+//                    cooks.add(c);
+//                }
+//            }
+//        }
+//        Cook cook = cookRepository.findById(cookId).get();
+//        cooks.add(cook);
+//        return cooks;
+//    }
+
     public List<Cook> findByCategory(Search search) {
         List<Cook> cooks = cookRepository.findAll();
         List<Cook> getCooks = new ArrayList<>();
@@ -38,12 +112,11 @@ public class CookServiceImpl implements CrudService<Cook>, CookService {
             for (Skill s : c.getSkills()){
                 if (s.getCategory().getId() == category.getId()){
                     cookId = c.getId();
+                    Cook cook = cookRepository.findById(cookId).get();
+                    getCooks.add(cook);
                 }
             }
         }
-        Cook cook = cookRepository.findById(cookId).get();
-        getCooks.add(cook);
-        cookRepository.save(cook);
         return getCooks;
     }
 
@@ -52,7 +125,9 @@ public class CookServiceImpl implements CrudService<Cook>, CookService {
         User user = userRepository.findById(userId).get();
         c.setUser(user);
         Roles role = rolesRepository.findByName("ROLE_COOK");
-        user.setRoles(new HashSet<Roles>(Arrays.asList(role)));
+        Set<Roles> roles = user.getRoles();
+        roles.add(role);
+        user.setRoles(roles);
         return cookRepository.save(c);
     }
 

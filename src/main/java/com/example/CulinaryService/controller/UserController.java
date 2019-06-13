@@ -1,10 +1,9 @@
 package com.example.CulinaryService.controller;
 
 import com.example.CulinaryService.helpers.Helper;
-import com.example.CulinaryService.model.Order;
-import com.example.CulinaryService.model.Roles;
-import com.example.CulinaryService.model.User;
+import com.example.CulinaryService.model.*;
 import com.example.CulinaryService.repository.OrderRepository;
+import com.example.CulinaryService.service.CookService;
 import com.example.CulinaryService.service.CrudService;
 import com.example.CulinaryService.service.UserService;
 import com.example.CulinaryService.service.UserServiceImpl;
@@ -29,22 +28,17 @@ public class UserController {
     private OrderRepository orderRepository;
 
     @Autowired
+    private CookService cookService;
+
+    @Autowired
     private Helper helper;
 
-    //todo - helper
-    @CrossOrigin
-    @GetMapping("/getAllOrders")
-    public List<Order> getOrder(){
-        helper.getCurrentUser();
-        return orderRepository.findAll();
-    }
-
-    @GetMapping(path = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping("/getAll")
     public List<User> getAll(){
             return this.userCrudService.getAll();
     }
 
-    @GetMapping(path = "/getById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping("/getById/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id){
         User user = this.userCrudService.getById(id);
         try {
@@ -65,23 +59,6 @@ public class UserController {
             System.out.println(ex.toString());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
-
-
-    @PostMapping("/toOrder/{userId}/{cookId}")
-    public ResponseEntity<Order> toOrder(@RequestBody Order o, @PathVariable Long userId, @PathVariable Long cookId){
-        try {
-            Order order = userCrudService.madeOrder(o, userId, cookId);
-            return new ResponseEntity<>(order, HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/getAllOrders/{userId}")
-    public List<Order> getAllOrders(@PathVariable Long userId) {
-           return userCrudService.getAllOrders(userId);
     }
 
     @GetMapping("get/{name}")

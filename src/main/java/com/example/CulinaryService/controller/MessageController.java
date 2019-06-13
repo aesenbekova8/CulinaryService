@@ -19,11 +19,6 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
-    @GetMapping("/getAll")
-    public List<Message> getAll(){
-       return messageRepository.findAll();
-    }
-
     //todo - показать
     @PostMapping("/send/{fromUserId}/{toUserId}")
     public ResponseEntity<Message> send(@RequestBody Message m,

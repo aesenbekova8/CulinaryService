@@ -1,7 +1,10 @@
 package com.example.CulinaryService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Cook {
@@ -14,10 +17,18 @@ public class Cook {
     private User user;
 
     @ManyToMany
-    @JoinTable(name = "cook_skill",
-            joinColumns = @JoinColumn(name = "cook_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    @JsonIgnore
+//    @JoinTable(name = "cook_skill",
+//            joinColumns = @JoinColumn(name = "cook_id"),
+//            inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
+
+    @ManyToMany
+    @JsonIgnore
+//    @JoinTable(name = "cook_mark",
+//            joinColumns = @JoinColumn(name = "cook_id"),
+//            inverseJoinColumns = @JoinColumn(name = "mark_id"))
+    private List<Mark> marks;
 
     private int rating;
 
@@ -52,6 +63,14 @@ public class Cook {
 
     public void setSkills(List<Skill> skills) {
         this.skills = skills;
+    }
+
+    public List<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(List<Mark> marks) {
+        this.marks = marks;
     }
 
     public int getRating() {

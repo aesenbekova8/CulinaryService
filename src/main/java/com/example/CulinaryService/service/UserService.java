@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
-    Order madeOrder(Order order, Long userId, Long cookId);
-    List<Order> getAllOrders(Long userId);
     User getByName(String name, User user);
     User getByEmail(String email);
 }

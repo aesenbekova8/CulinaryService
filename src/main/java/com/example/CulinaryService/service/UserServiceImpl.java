@@ -27,10 +27,6 @@ public class UserServiceImpl implements CrudService<User>, UserService{
 
     @Autowired
     private CookRepository cookRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
     @Autowired
     private SkillRepository skillRepository;
 
@@ -48,26 +44,6 @@ public class UserServiceImpl implements CrudService<User>, UserService{
             }
         }
         return user;
-    }
-
-    @Override
-    public List<Order> getAllOrders(Long userId) {
-        User user = userRepository.findById(userId).get();
-        List<Order> orders = user.getOrders();
-        return orders;
-    }
-
-    @Override
-    public Order madeOrder(Order order, Long userId, Long cookId) {
-        User user = userRepository.findById(userId).get();
-        Cook cook = cookRepository.findById(cookId).get();
-        order.setCook(cook);
-        order.setUser(user);
-        orderRepository.save(order);
-        List<Order> userOrders = user.getOrders();
-        userOrders.add(order);
-        userRepository.save(user);
-        return orderRepository.save(order);
     }
 
     @Override

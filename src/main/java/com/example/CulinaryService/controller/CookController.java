@@ -2,6 +2,7 @@ package com.example.CulinaryService.controller;
 
 import com.example.CulinaryService.entity.Search;
 import com.example.CulinaryService.model.Cook;
+import com.example.CulinaryService.model.Mark;
 import com.example.CulinaryService.service.CookService;
 import com.example.CulinaryService.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +21,6 @@ public class CookController {
 
     @Autowired
     private CookService cookService;
-
-    @PostMapping(path = "/add", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Cook> add(@RequestBody Cook u){
-        Cook Cook = this.cookCrudService.add(u);
-        try {
-            return new ResponseEntity<>(Cook, HttpStatus.OK);
-        }
-        catch (Exception ex){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
 
     @GetMapping(path = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<Cook> getAll(){
@@ -60,9 +50,26 @@ public class CookController {
         }
     }
 
-    //TODO - закончить
     @GetMapping("/getByCategory")
     public List<Cook> getByCategory(@RequestBody Search search){
         return cookService.findByCategory(search);
+    }
+
+    @GetMapping("/getAllCooks")
+    public List<Cook> getAllCooks(){
+        return cookService.getAllCooks();
+    }
+
+    @PostMapping("/rateCook/{userId}/{cookId}")
+    public ResponseEntity<Cook> rateCook(@RequestBody Mark mark,
+                                         @PathVariable Long userId,
+                                         @PathVariable Long cookId){
+        try {
+            Cook cook = cookService.rateCook(mark, userId, cookId);
+            return new ResponseEntity<>(cook, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
