@@ -10,7 +10,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "user1")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,10 @@ public class User {
 
     @ManyToMany
     @JsonIgnore
-//    @JoinTable(name = "user_role",
-//            joinColumns = @JoinColumn(name = "users_id"),
-//            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Roles> roles;
 
     @Length(min = 3)
@@ -47,6 +48,14 @@ public class User {
     @JsonIgnore
 //    @JoinTable(name = "orders_id")
     private List<Order> orders;
+
+    @OneToMany
+    @JsonIgnore
+    private Set<Cook> favorites;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Chat> chats;
 
     public User() {
     }
@@ -129,5 +138,21 @@ public class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Set<Cook> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Set<Cook> favorites) {
+        this.favorites = favorites;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
     }
 }

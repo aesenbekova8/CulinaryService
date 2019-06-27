@@ -17,16 +17,4 @@ public class RolesServiceImpl {
     public Roles add(Roles r){
         return rolesRepository.save(r);
     }
-
-//    public Roles findByRole(String name){
-//        Long roleId = (long)1;
-//        List<Roles> roles = rolesRepository.findAll();
-//        for (Roles r : roles){
-//            if (r.getName().equals(name)){
-//                roleId = r.getId();
-//            }
-//        }
-//        Roles role = rolesRepository.findById(roleId);
-//        return role;
-//    }
 }

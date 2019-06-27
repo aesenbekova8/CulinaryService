@@ -17,12 +17,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserServiceImpl userCrudService;
+    private CrudService<User> userCrudService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -61,14 +65,24 @@ public class UserController {
         }
     }
 
-    @GetMapping("get/{name}")
+    @GetMapping("/get/{name}")
     public ResponseEntity<User> getByName(@PathVariable String name,  User u){
         try {
-            User user = userCrudService.getByName(name, u);
+            User user = userService.getByName(name, u);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/{cookId}/add")
+    public Set<Cook> addToFavorites(@PathVariable Long cookId){
+        return userService.addToFavorites(cookId);
+    }
+
+    @GetMapping("/favorites")
+    public Set<Cook> favorites(){
+        return userService.getAllFavorites();
     }
 }

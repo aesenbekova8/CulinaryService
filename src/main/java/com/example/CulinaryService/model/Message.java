@@ -12,11 +12,11 @@ public class Message {
 
     @OneToOne
     @JoinColumn(name = "from_user_id")
-    private User fromUserId;
+    private User fromUser;
 
     @OneToOne
     @JoinColumn(name = "to_user_id")
-    private User toUserId;
+    private User toUser;
 
     private String message;
 
@@ -25,11 +25,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(User fromUserId, User toUserId, String message) {
-        this.fromUserId = fromUserId;
-        this.toUserId = toUserId;
+    public Message(User fromUser, User toUser, String message) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
         this.message = message;
-        this.time = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -40,20 +39,20 @@ public class Message {
         this.id = id;
     }
 
-    public User getFromUserId() {
-        return fromUserId;
+    public User getFromUser() {
+        return fromUser;
     }
 
-    public void setFromUserId(User fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
     }
 
-    public User getToUserId() {
-        return toUserId;
+    public User getToUser() {
+        return toUser;
     }
 
-    public void setToUserId(User toUserId) {
-        this.toUserId = toUserId;
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
     }
 
     public String getMessage() {

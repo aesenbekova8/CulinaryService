@@ -19,13 +19,11 @@ public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
-    //todo - показать
-    @PostMapping("/send/{fromUserId}/{toUserId}")
+    @PostMapping("/send/{toUserId}")
     public ResponseEntity<Message> send(@RequestBody Message m,
-                                        @PathVariable Long fromUserId,
                                         @PathVariable Long toUserId){
         try {
-            Message message = messageService.sendMessage(m, fromUserId, toUserId);
+            Message message = messageService.sendMessage(m, toUserId);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
         catch (Exception e){

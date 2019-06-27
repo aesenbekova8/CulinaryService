@@ -5,6 +5,6 @@ import com.example.CulinaryService.model.Order;
 import java.util.List;
 
 public interface OrderService {
-    Order madeOrder(Order order, Long userId, Long cookId);
-    List<Order> getAllOrders(Long userId);
+    Order madeOrder(Order order, Long cookId);
+    List<Order> getAllOrders();
 }

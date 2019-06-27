@@ -32,6 +32,18 @@ public class Cook {
 
     private int rating;
 
+    @OneToMany
+    @JsonIgnore
+    private List<Chat> chats;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Application> applications;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Application> confirmApp;
+
     public Cook() {
     }
 
@@ -79,5 +91,29 @@ public class Cook {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
+
+    public List<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+    }
+
+    public List<Application> getConfirmApp() {
+        return confirmApp;
+    }
+
+    public void setConfirmApp(List<Application> confirmApp) {
+        this.confirmApp = confirmApp;
     }
 }

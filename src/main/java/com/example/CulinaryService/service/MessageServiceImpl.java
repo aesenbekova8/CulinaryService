@@ -28,28 +28,30 @@ public class MessageServiceImpl implements MessageService {
     private Helper helper;
 
     @Override
-    public Message sendMessage(Message message, Long fromUserId, Long toUserId) {
-        messageRepository.save(message);
-        List<Message> messages = new ArrayList<>();
+    public Message sendMessage(Message message, Long toUserId) {
         User toUser = userRepository.findById(toUserId).get();
-        User fromUser = userRepository.findById(fromUserId).get();
-        message.setFromUserId(fromUser);
-        message.setToUserId(toUser);
-        messages.add(message);
-        messageRepository.save(message);
-        Chat chat = chatRepository.findByUser(fromUser);
-        if (chat == null){
-            Chat newChat = new Chat();
-            newChat.setUser(fromUser);
-            messageRepository.save(message);
-            newChat.setMessages(messages);
-            chatRepository.save(newChat);
-        }
-        else {
-            chat.setUser(fromUser);
-            messageRepository.save(message);
-            chat.setMessages(messages);
-            chatRepository.save(chat);
+        User fromUser = userRepository.findById(helper.getCurrentUser().getId()).get();
+        List<Message> messages = messageRepository.findAll();
+        for (Message m : messages) {
+            if (m.getFromUser().equals(fromUser) && m.getFromUser().equals(fromUser)) {
+                List<Chat> chats = toUser.getChats();
+                message.setFromUser(fromUser);
+                message.setToUser(toUser);
+                messageRepository.save(message);
+                fromUser.setChats(chats);
+                userRepository.save(fromUser);
+                return message;
+            } else {
+                List<Chat> chats = new ArrayList<>();
+                message.setFromUser(fromUser);
+                message.setToUser(toUser);
+                messageRepository.save(message);
+                fromUser.setChats(chats);
+                toUser.setChats(chats);
+                userRepository.save(fromUser);
+                userRepository.save(toUser);
+                return message;
+            }
         }
         return message;
     }

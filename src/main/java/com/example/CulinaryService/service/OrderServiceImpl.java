@@ -1,5 +1,6 @@
 package com.example.CulinaryService.service;
 
+import com.example.CulinaryService.helpers.Helper;
 import com.example.CulinaryService.model.Cook;
 import com.example.CulinaryService.model.Order;
 import com.example.CulinaryService.model.User;
@@ -22,16 +23,19 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CookRepository cookRepository;
 
+    @Autowired
+    private Helper helper;
+
     @Override
-    public List<Order> getAllOrders(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public List<Order> getAllOrders() {
+        User user = userRepository.findById(helper.getCurrentUser().getId()).get();
         List<Order> orders = user.getOrders();
         return orders;
     }
 
     @Override
-    public Order madeOrder(Order order, Long userId, Long cookId) {
-        User user = userRepository.findById(userId).get();
+    public Order madeOrder(Order order, Long cookId) {
+        User user = userRepository.findById(helper.getCurrentUser().getId()).get();
         Cook cook = cookRepository.findById(cookId).get();
         List<Order> userOrders = user.getOrders();
         order.setCook(cook);

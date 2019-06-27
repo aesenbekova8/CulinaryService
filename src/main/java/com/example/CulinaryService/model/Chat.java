@@ -1,5 +1,7 @@
 package com.example.CulinaryService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,11 +12,11 @@ public class Chat {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany
-    @JoinTable(name = "message_id")
+    @JsonIgnore
     private List<Message> messages;
 
     public Chat() {

@@ -6,6 +6,7 @@ import com.example.CulinaryService.repository.*;
 import com.example.CulinaryService.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -36,77 +37,118 @@ public class Bootstrap implements CommandLineRunner {
     @Autowired
     private ChatRepository chatRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CookRepository cookRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        Roles roles = new Roles("ROLE_ADMIN");
+        Roles roles1 = new Roles("ROLE_ADMIN");
         Roles roles2 = new Roles("ROLE_USER");
         Roles roles3 = new Roles("ROLE_COOK");
-        roleCrudService.save(roles);
+        roleCrudService.save(roles1);
         roleCrudService.save(roles2);
         roleCrudService.save(roles3);
 
         Category category1 = new Category("Китайская кухня");
         Category category2 = new Category("Русская кухня");
-        Category category3 = new Category("name");
+        Category category3 = new Category("Италианская кухня");
+        Category category4 = new Category("Корейская кухня");
         categoryRepository.save(category1);
         categoryRepository.save(category2);
         categoryRepository.save(category3);
+        categoryRepository.save(category4);
 
         Skill skill1 = new Skill(category1);
         Skill skill2 = new Skill(category2);
         Skill skill3 = new Skill(category3);
+        Skill skill4 = new Skill(category4);
         skillRepository.save(skill1);
         skillRepository.save(skill2);
         skillRepository.save(skill3);
+        skillRepository.save(skill4);
 
-        User user1 = new User("user1", "Gordon James Ramsay", "+78450518354", "gordon@gmail.com", "123");
-        userCrudService.add(user1);
+        List<Skill> skills1 = new ArrayList<>();
+        skills1.add(skill1);
+        skills1.add(skill2);
+        skills1.add(skill4);
 
-        User user2 = new User("user2","Alain Ducasse", "+7897543168","alain@gmail.com", "123");
+        List<Skill> skills2 = new ArrayList<>();
+        skills2.add(skill2);
+        skills2.add(skill3);
+
+        List<Skill> skills3 = new ArrayList<>();
+        skills3.add(skill4);
+        skills3.add(skill3);
+
+        User user1 = new User("cook1", "Gordon James Ramsay", "+78450518354", "gordon@gmail.com", passwordEncoder.encode("123"));
+        user1.setRoles(new HashSet<>(Arrays.asList(roles3)));
+        user1.setActive(1);
+        userRepository.save(user1);
+
+        Cook cook1 = new Cook();
+        cook1.setSkills(skills1);
+        cook1.setUser(user1);
+        cookRepository.save(cook1);
+
+        User user2 = new User("cook2","Alain Ducasse", "+7897543168","alain@gmail.com", passwordEncoder.encode("123"));
+        user2.setRoles(new HashSet<>(Arrays.asList(roles3)));
+        user2.setActive(1);
         userCrudService.add(user2);
 
-        User user3 = new User("user3", "Matsuhisa Nobuyuki", "+46445313545","nobuyuki@gmail.com", "123");
+        Cook cook2 = new Cook();
+        cook2.setSkills(skills2);
+        cook2.setUser(user2);
+        cookRepository.save(cook2);
+
+        User user3 = new User("cook3", "Matsuhisa Nobuyuki", "+46445313545","nobuyuki@gmail.com", passwordEncoder.encode("123"));
+        user2.setRoles(new HashSet<>(Arrays.asList(roles3)));
+        user3.setActive(1);
         userCrudService.add(user3);
 
-        Cook cook1 = new Cook(user1, new ArrayList<Skill>(Arrays.asList( skill3)));
-        cookService.add(cook1);
+        Cook cook3 = new Cook();
+        cook3.setSkills(skills3);
+        cook3.setUser(user3);
+        cookRepository.save(cook3);
 
-        Cook cook2 = new Cook(user2, new ArrayList<Skill>(Arrays.asList(skill3, skill2)));
-        cookService.add(cook2);
+        User user4 = new User();
+        user4.setActive(1);
+        user4.setRoles(new HashSet<>(Arrays.asList(roles2)));
+        user4.setName("user");
+        user4.setLastName("4");
+        user4.setPhoneNo("+54512348645");
+        user4.setEmail("user4@gmail.com");
+        user4.setPassword(passwordEncoder.encode("123"));
+        userRepository.save(user4);
 
-        Cook cook3 = new Cook(user3, new ArrayList<Skill>(Arrays.asList(skill1, skill2)));
-        cookService.add(cook3);
+        User user5 = new User();
+        user5.setActive(1);
+        user5.setRoles(new HashSet<>(Arrays.asList(roles2)));
+        user5.setName("user5");
+        user5.setLastName("5");
+        user5.setPhoneNo("+687543682");
+        user5.setEmail("user5@gmail.com");
+        user5.setPassword(passwordEncoder.encode("123"));
+        userRepository.save(user5);
 
-        Cook cook4 = new Cook(user1, new ArrayList<Skill>(Arrays.asList(skill1, skill3)));
-        cookService.add(cook1);
-
-//        Order order1 = new Order(user1, cook2);
-//        Order order2 = new Order(user3, cook2);
-//        Order order3 = new Order(user1, cook1);
-//        orderRepository.save(order1);
-//        orderRepository.save(order2);
-//        orderRepository.save(order3);
-//
-        Message message1 = new Message(user1, user2, "Hello!");
-        messageRepository.save(message1);
-
-        Message message2 = new Message(user2, user1, "Hi!");
-        messageRepository.save(message2);
-
-        Message message3 = new Message(user1, user2, "How are you?");
-        messageRepository.save(message3);
-//
-        List<Message> messages = new ArrayList<>();
-        messages.add(message1);
-        messages.add(message2);
-        messages.add(message3);
-//
-        Chat chat1 = new Chat(user1, messages);
-        chatRepository.save(chat1);
-//
-//        Order order1 = new Order(user1, cook1);
-//        orderCrudService.add(order1);
-//        Order order2 = new Order(user2, cook2);
-//        orderCrudService.add(order2);
+        User user6 = new User();
+        user6.setActive(1);
+        user6.setRoles(new HashSet<>(Arrays.asList(roles1)));
+        user6.setName("user6");
+        user6.setLastName("6");
+        user6.setPhoneNo("+13541341341");
+        user6.setEmail("user6@gmail.com");
+        user6.setPassword(passwordEncoder.encode("123"));
+        userRepository.save(user6);
     }
 }
+
+//user6 - ADMIN
+//user5, user4 - USER
+//user1, user2, user3 - COOK
+//user7 - USER

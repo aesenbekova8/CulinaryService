@@ -31,10 +31,10 @@ public class RegisterController {
         }
     }
 
-    @PostMapping("/asCook/{userId}")
-    public ResponseEntity<Cook> cookRegistration(@RequestBody Cook c, @PathVariable Long userId){
+    @PostMapping("/asCook")
+    public ResponseEntity<Cook> cookRegistration(@RequestBody Cook c){
         try {
-            Cook cook = cookServiceImpl.add(c, userId);
+            Cook cook = cookServiceImpl.add(c);
             return new ResponseEntity<>(cook, HttpStatus.OK);
         }
         catch (Exception e){

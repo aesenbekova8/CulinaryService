@@ -16,8 +16,14 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @GetMapping("/getAll/{userId}")
-    public Chat getByUserId(@PathVariable Long userId){
-        return chatService.getAllByUserId(userId);
+    @GetMapping("/getAll")
+    public List<Chat> getByUserId(){
+        return chatService.getAllByUserId();
+    }
+
+    @PostMapping("/{toUserId}/send")
+    public List<Message> start(@RequestBody Message message,
+                                      @PathVariable Long toUserId){
+        return chatService.startChat(message, toUserId);
     }
 }

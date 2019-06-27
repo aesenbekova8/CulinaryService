@@ -60,12 +60,11 @@ public class CookController {
         return cookService.getAllCooks();
     }
 
-    @PostMapping("/rateCook/{userId}/{cookId}")
+    @PostMapping("/rateCook/{cookId}")
     public ResponseEntity<Cook> rateCook(@RequestBody Mark mark,
-                                         @PathVariable Long userId,
                                          @PathVariable Long cookId){
         try {
-            Cook cook = cookService.rateCook(mark, userId, cookId);
+            Cook cook = cookService.rateCook(mark, cookId);
             return new ResponseEntity<>(cook, HttpStatus.OK);
         }
         catch (Exception e){

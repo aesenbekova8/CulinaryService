@@ -11,4 +11,6 @@ import java.util.Set;
 public interface UserService {
     User getByName(String name, User user);
     User getByEmail(String email);
+    Set<Cook> addToFavorites(Long cookId);
+    Set<Cook> getAllFavorites();
 }

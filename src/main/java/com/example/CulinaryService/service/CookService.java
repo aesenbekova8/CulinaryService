@@ -7,8 +7,8 @@ import com.example.CulinaryService.model.Mark;
 import java.util.List;
 
 public interface CookService {
-    Cook add(Cook c, Long userId);
+    Cook add(Cook c);
     List<Cook> findByCategory(Search search);
-    Cook rateCook(Mark mark, Long userId, Long cookId);
+    Cook rateCook(Mark mark, Long cookId);
     List<Cook> getAllCooks();
 }

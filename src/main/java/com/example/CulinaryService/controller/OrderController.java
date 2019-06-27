@@ -19,15 +19,15 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/getAllOrders/{userId}")
-    public List<Order> getAllOrders(@PathVariable Long userId) {
-        return orderService.getAllOrders(userId);
+    @GetMapping("/getAllOrders")
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
     }
 
-    @PostMapping("/toOrder/{userId}/{cookId}")
-    public ResponseEntity<Order> toOrder(@RequestBody Order o, @PathVariable Long userId, @PathVariable Long cookId) {
+    @PostMapping("/toOrder/{cookId}")
+    public ResponseEntity<Order> toOrder(@RequestBody Order o, @PathVariable Long cookId) {
         try {
-            Order order = orderService.madeOrder(o, userId, cookId);
+            Order order = orderService.madeOrder(o, cookId);
             return new ResponseEntity<>(order, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -1,5 +1,6 @@
 package com.example.CulinaryService.service;
 
+import com.example.CulinaryService.helpers.Helper;
 import com.example.CulinaryService.model.*;
 import com.example.CulinaryService.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,26 @@ public class UserServiceImpl implements CrudService<User>, UserService{
     private CookRepository cookRepository;
     @Autowired
     private SkillRepository skillRepository;
+
+    @Autowired
+    private Helper helper;
+
+    @Override
+    public Set<Cook> getAllFavorites() {
+        User user = userRepository.findById(helper.getCurrentUser().getId()).get();
+        Set<Cook> cooks = user.getFavorites();
+        return cooks;
+    }
+
+    @Override
+    public Set<Cook> addToFavorites(Long cookId) {
+        User user = userRepository.findById(helper.getCurrentUser().getId()).get();
+        Cook cook = cookRepository.findById(cookId).get();
+        Set<Cook> cooks = user.getFavorites();
+        cooks.add(cook);
+        userRepository.save(user);
+        return cooks;
+    }
 
     @Override
     public User getByEmail(String email) {
